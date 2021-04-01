@@ -1,0 +1,62 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="resetSheet" href="reset.css">
+    <link rel="styleSheet" href="style.css">
+    <title>Quiz</title>
+</head>
+
+<body>
+
+    <header>
+    <div class="scores">
+        <a href="./highschores.html" id="view-scores">View Highscores</a>
+    </div>
+    <div class="timer">Time: <span id="time">0</span>
+    </div>
+    </header>
+
+    <div class="wrapper">
+        <div id="start-screen" class="start">
+            <h1> Coding Quiz Challenge</h1>
+
+            <p>
+                Try to answer the following questions withing the time limit. Incorrect andwers will penalize your
+                score and time by 15 seconds.
+            </p>
+
+            <button id="start">Start Quiz</button>
+             
+        </div>
+
+        <div id="questions" class="hide">
+            <h2 id="question-title"></h2>
+            <div id="choices" class="choices"></div>
+            <p></p>
+        </div>
+         
+        <div id="end-screen" class="hide">
+            <h2>All Done!</h2>
+            <p>The Final Score is <span id="final-score"></span>
+                <br><br>
+                Enter initials <input type="text" id="initials" max="3">
+                <button id="submit">Submit</button>
+            </p>
+        </div>
+        <div id="highscores" class="hide">
+            <h2>Highscores</h2>
+            <!-- ul will be blank, everytime apphend in for loop will look like coming out of nothing -->
+            <ul id= "list-scores"></ul> 
+            <button id="back">Go Back</button>
+        </div>
+    </div>
+    <div id="feedback" class="feedback-hide"></div>
+    <script src="questions.js"></script>
+    <script src="script.js"></script>
+</body>
+
+</html>

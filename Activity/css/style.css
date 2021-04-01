@@ -1,0 +1,47 @@
+header {
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+}
+
+header a {
+    text-decoration: none;
+}
+
+.wrapper {
+    margin: auto;
+    text-align: center;
+}
+
+.start {
+    text-align: center;
+}
+
+#start {
+    border-radius: 5px;
+    background-color: blueviolet;
+    color: white;
+} 
+
+.hide {
+    display: none;
+}
+
+.timer {
+    display: flex;
+    justify-content: flex-end;
+} 
+
+.choices {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    text-align: center;
+    align-items: center;
+} 
+
+.choices button {
+    border-radius: 5px;
+    background-color: blueviolet;
+    color: white;
+}
