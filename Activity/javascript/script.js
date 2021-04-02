@@ -4,40 +4,40 @@ var timeLeft = 75;
 var timeInterval;
 //array to push to
 var count = [];
-var listScores = document.querySelector("#list-scores")
+var listScores = document.querySelector("#list-scores");
 var insertText = document.querySelector("#questions p");
-var submitBtn = document.querySelector("#submit");
+var complyBtn = document.querySelector("#submit");
 var backBtn = document.querySelector("#back");
-var endScreen = document.querySelector('#end-screen');
-var startScreen = document.querySelector('#start-screen');
-var startBtn = document.querySelector("#start");
-var questionsElement = document.querySelector("#questions");
-var timerElement = document.querySelector("#time");
-var questionChoices = document.querySelector("#choices");
+var gameEnd = document.querySelector('#end-screen');
+var beginScreen= document.querySelector('#start-screen');
+var beginBtn = document.querySelector("#start");
+var inquiryElement = document.querySelector("#questions");
+var timeEl = document.querySelector("#time");
+var questionOptions = document.querySelector("#choices");
  // selected div to work with element
  var highscores = document.querySelector("#highscores");
 backBtn.onclick = points; 
 
-// submitBtn.onclick = submitScores;
+// complyBtn.onclick = submitScores;
 // calling the highpoints function whenever a tag is clicked
 highscores.addEventListener("click", function() {
     highPoints()
 })
 
-startBtn.addEventListener("click", function() {
+beginBtn.addEventListener("click", function() {
     console.log("clicky clicky");
     startQuiz()
 })
 
-submitBtn.addEventListener("click", function () {
-    submitScores()
+complyBtn.addEventListener("click", function (e) {
+    submitScores(e)
 })
 
 
 function startQuiz() {
-    startScreen.setAttribute('class', "hide");
+    beginScreen.setAttribute('class', "hide");
     // hides start screen and shows questions
-    questionsElement.removeAttribute("class");
+    inquiryElement.removeAttribute("class");
     getCurrentQuestion();
     setTime();
 }
@@ -50,16 +50,16 @@ function getCurrentQuestion() {
     }
     var titleElement = document.querySelector("#question-title")
     titleElement.textContent = currentQuestion.title;
-    questionChoices.innerHTML = "";
+    questionOptions.innerHTML = "";
     for (var i = 0; i < currentQuestion.choice.length; i++) {
-        var userChoice = document.createElement("button");
-        userChoice.setAttribute("class", "choice")
-        userChoice.setAttribute("value", currentQuestion.choice[i])
-        userChoice.textContent = i + 1 + "." + currentQuestion.choice[i];
-        userChoice.id = (i + 1);
-        userChoice.onclick = getAnswer;
+        var userDecision = document.createElement("button");
+        userDecision.setAttribute("class", "choice")
+        userDecision.setAttribute("value", currentQuestion.choice[i])
+        userDecision.textContent = i + 1 + "." + currentQuestion.choice[i];
+        userDecision.id = (i + 1);
+        userDecision.onclick = getAnswer;
 
-        questionChoices.appendChild(userChoice);
+        questionOptions.appendChild(userDecision);
     }
     insertText.textContent = "";
     
@@ -86,12 +86,12 @@ function getAnswer() {
 function endGame() {
     var questions = document.querySelector('#questions')
     questions.setAttribute('class', "hide");
-    endScreen.setAttribute('class', "show");
+    gameEnd.setAttribute('class', "show");
     document.querySelector("#final-score").textContent= timeLeft;
     if(timeInterval) {
         clearInterval(timeInterval);
     }
-    timerElement.textContent = "";
+    timeEl.textContent = timeLeft;
 }
 
 
@@ -104,16 +104,16 @@ function setTime() {
         // As long as the `timeLeft` is greater than 1
         if (timeLeft > 1) {
             // Set the `textContent` of `timerEl` to show the remaining seconds
-            timerElement.textContent = timeLeft + ' seconds remaining';
+            timeEl.textContent = timeLeft + ' seconds remaining';
             // Decrement `timeLeft` by 1
             timeLeft--;
         } else if (timeLeft === 1) {
             // When `timeLeft` is equal to 1, rename to 'second' instead of 'seconds'
-            timerElement.textContent = timeLeft + ' second remaining';
+            timeEl.textContent = timeLeft + ' second remaining';
             timeLeft--;
         } else {
             // Once `timeLeft` gets to 0, set `timerEl` to an empty string
-            timerElement.textContent = '';
+            timeEl.textContent = '';
             // Use `clearInterval()` to stop the timer
             clearInterval(timeInterval);
               // Call the `endGame` function
@@ -124,19 +124,19 @@ function setTime() {
 
 function highPoints() {
     // highscores will be showing
-    highscores.removeAttribute("class", "hide");
+    highscores.setAttribute("class", "show");
     //
-    startScreen.setAttribute('class', "hide");
+    beginScreen.setAttribute('class', "hide");
     //
-    questionsElement.setAttribute('class', "hide");
+    inquiryElement.setAttribute('class', "hide");
     //
-    endScreen.setAttribute('class', "hide");
+    gameEnd.setAttribute('class', "hide");
 }
 
 function points() {
     highscores.setAttribute("class", "hide");
     //
-    startScreen.setAttribute('class', "");
+    beginScreen.setAttribute('class', "");
     // Refreshes the page
     location.reload();
 }
@@ -146,14 +146,15 @@ function submitScores(event) {
     event.preventDefault();
     var initials = document.querySelector("#initials");
     //retrieves items in storage. parse taking string and turns back into array or single object
-    var storageLocal = JSON.parse(localStorage.getItem("scoresHigh"));
+    var storageLocal = JSON.parse(localStorage.getItem("scoresHigh")) || [];
     console.log(storageLocal);
     // object
     var userScore = {
         // takes value of input field and assigns to name inside object
         name: initials.value,
-        score: timeLeft.value
+        score: timeEl.textContent
     };
+        console.log(userScore);
     // if item from storage has value, will execute what's inside if statment
     if (storageLocal !== null) {
         // if storageLocal has something in it, then count will become whatever is inside of storage local
@@ -164,12 +165,16 @@ function submitScores(event) {
     // stringify turns anything into a string
     localStorage.setItem("scoresHigh", JSON.stringify(count));
     console.log("stored");
-    for (i = 0; i < 5; i++) {
+    var storageLocal = JSON.parse(localStorage.getItem("scoresHigh")) || [];
+    console.log(storageLocal[0].name);
+    for (i = 0; i < userScore.length; i++) //when for goes to 3, no 4th item. 
+    {
         var listItems = document.createElement("LI")
-        listItems.textContent = storageLocal[i]
-        document.getElementById("list-scores").appendChild(listItems);
+        listItems.textContent = storageLocal[i].name + " " + storageLocal[i].score;
+        document.getElementById("list-scores").append(listItems);
         console.log("done")
     }  
+    highPoints();
 }
 
 // function called when click view Highscores
